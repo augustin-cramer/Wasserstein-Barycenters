@@ -107,3 +107,36 @@ def cotangent_laplacian(vertices, triangles):
     cot_laplacian_matrix = diagonal_matrix - laplacian_matrix
 
     return cot_laplacian_matrix
+
+def vertex_triangle_areas(vertices, triangles):
+    """
+    Calculate the sum of the areas of triangles for which each vertex is a part.
+
+    Parameters:
+    - vertices: Numpy array with the coordinates of the vertices.
+    - triangles: Numpy array with the triangles' edge indices.
+
+    Returns:
+    - Numpy array containing the sum of the areas for each vertex.
+    """
+    num_vertices = vertices.shape[0]
+    areas = np.zeros(num_vertices)
+
+    # Iterate over each triangle
+    for triangle in triangles:
+        # Extract vertex indices for the triangle
+        i, j, k = triangle
+
+        # Calculate vectors representing two edges of the triangle
+        v1 = vertices[j] - vertices[i]
+        v2 = vertices[k] - vertices[i]
+
+        # Calculate the area of the triangle using cross product
+        area = 0.5 * np.linalg.norm(np.cross(v1, v2))
+
+        # Accumulate the area for each vertex
+        areas[i] += area
+        areas[j] += area
+        areas[k] += area
+
+    return np.diag(areas)
