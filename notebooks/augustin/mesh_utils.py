@@ -1,62 +1,48 @@
 import numpy as np
 from scipy.sparse import coo_matrix
 
-def is_point_inside_mesh(point, vertices, triangles):
-    def ray_intersects_triangle(ray_origin, ray_direction, triangle_vertices):
-        # Möller–Trumbore intersection algorithm
-        v0, v1, v2 = triangle_vertices
-        e1 = v1 - v0
-        e2 = v2 - v0
-        h = np.cross(ray_direction, e2)
-        a = np.dot(e1, h)
+def ray_intersects_triangle(ray_origin, ray_direction, triangle_vertices):
+    v0, v1, v2 = triangle_vertices
+    e1 = v1 - v0
+    e2 = v2 - v0
+    h = np.cross(ray_direction, e2)
+    a = np.dot(e1, h)
 
-        if a > -1e-6 and a < 1e-6:
-            return False
+    mask_a = (a > -1e-6) & (a < 1e-6)
+    f = np.where(mask_a, np.inf, 1.0 / a)
 
-        f = 1.0 / a
-        s = ray_origin - v0
-        u = f * np.dot(s, h)
+    s = ray_origin - v0
+    u = f * np.dot(s, h)
 
-        if u < 0.0 or u > 1.0:
-            return False
+    mask_u = (u < 0.0) | (u > 1.0)
+    f = np.where(mask_u, np.inf, f)
 
-        q = np.cross(s, e1)
-        v = f * np.dot(ray_direction, q)
+    q = np.cross(s, e1)
+    v = f * np.dot(q, ray_direction)
 
-        if v < 0.0 or u + v > 1.0:
-            return False
+    mask_v = (v < 0.0) | ((u + v) > 1.0)
+    f = np.where(mask_v, np.inf, f)
 
-        t = f * np.dot(e2, q)
+    t = f * np.dot(q, e2)
 
-        return t > 1e-6
+    return (t > 1e-6) & (t != np.inf)   
 
-    # Check if the point is inside the mesh volume
-    ray_origin = point
+
+def vectorized_is_point_inside_mesh(points, vertices, triangles):
+    
+    # Check if the points are inside the mesh volume
+    ray_origin = points#[:, np.newaxis, :]
     ray_direction = np.array([1, 0, 0])  # Choose a ray direction (e.g., along the positive x-axis)
 
     inside_count = 0
 
     for triangle_indices in triangles:
         triangle_vertices = vertices[triangle_indices]
-        if ray_intersects_triangle(ray_origin, ray_direction, triangle_vertices):
-            inside_count += 1
+        intersections = ray_intersects_triangle(ray_origin, ray_direction, triangle_vertices)
+        inside_count += intersections
 
-    # If the number of intersections is odd, the point is inside the mesh volume
-    return inside_count % 2 == 1
-
-
-def calculate_mesh_volume(vertices, triangles):
-    def signed_volume_of_triangle(v1, v2, v3):
-        return np.dot(v1, np.cross(v2, v3)) / 6.0
-
-    volume = 0.0
-
-    for triangle_indices in triangles:
-        triangle_vertices = vertices[triangle_indices]
-        v1, v2, v3 = triangle_vertices
-        volume += signed_volume_of_triangle(v1, v2, v3)
-
-    return abs(volume)
+    # If the number of intersections is odd, the points are inside the mesh volume
+    return (inside_count % 2) == 1
 
 
 def cotangent_laplacian(vertices, triangles):
