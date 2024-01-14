@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.sparse import coo_matrix
+from tqdm import tqdm
 
 def ray_intersects_triangle(ray_origin, ray_direction, triangle_vertices):
     v0, v1, v2 = triangle_vertices
@@ -36,7 +37,7 @@ def vectorized_is_point_inside_mesh(points, vertices, triangles):
 
     inside_count = 0
 
-    for triangle_indices in triangles:
+    for triangle_indices in tqdm(triangles):
         triangle_vertices = vertices[triangle_indices]
         intersections = ray_intersects_triangle(ray_origin, ray_direction, triangle_vertices)
         inside_count += intersections
