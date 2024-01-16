@@ -1,6 +1,11 @@
 import numpy as np
 
-def ray_intersects_triangle(ray_origin: np.ndarray, ray_direction: np.ndarray, triangle_vertices: np.ndarray) -> np.ndarray:
+
+def ray_intersects_triangle(
+    ray_origin: np.ndarray,
+    ray_direction: np.ndarray,
+    triangle_vertices: np.ndarray,
+) -> np.ndarray:
     """Implement the Möller-Trumbore intersection algorithm.
 
     Args:
@@ -34,10 +39,12 @@ def ray_intersects_triangle(ray_origin: np.ndarray, ray_direction: np.ndarray, t
 
     t = f * np.dot(q, e2)
 
-    return (t > 1e-6) & (t != np.inf)   
+    return (t > 1e-6) & (t != np.inf)
 
 
-def mesh_to_point_cloud(points: np.ndarray, vertices: np.ndarray, triangles: np.ndarray) -> np.ndarray:
+def mesh_to_point_cloud(
+    points: np.ndarray, vertices: np.ndarray, triangles: np.ndarray
+) -> np.ndarray:
     """Check if the points are inside the mesh volume.
 
     Args:
@@ -48,7 +55,7 @@ def mesh_to_point_cloud(points: np.ndarray, vertices: np.ndarray, triangles: np.
     Returns:
         np.ndarray: boolean array indicating if the points are inside the mesh volume
     """
-    
+
     # Check if the points are inside the mesh volume
     ray_origin = points
     ray_direction = np.ones((3,))  # Choose a ray direction
@@ -57,7 +64,9 @@ def mesh_to_point_cloud(points: np.ndarray, vertices: np.ndarray, triangles: np.
 
     for triangle_indices in triangles:
         triangle_vertices = vertices[triangle_indices]
-        intersections = ray_intersects_triangle(ray_origin, ray_direction, triangle_vertices)
+        intersections = ray_intersects_triangle(
+            ray_origin, ray_direction, triangle_vertices
+        )
         inside_count += intersections
 
     # If the number of intersections is odd, the points are inside the mesh volume

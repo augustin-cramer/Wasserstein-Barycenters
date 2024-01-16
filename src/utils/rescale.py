@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def rescale(array: np.ndarray, inf: float, sup: float) -> np.ndarray:
     """Rescale an array to a given interval.
 
