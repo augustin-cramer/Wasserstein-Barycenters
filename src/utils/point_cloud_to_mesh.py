@@ -1,6 +1,7 @@
 import numpy as np
 import pyvista as pv
 
+
 def count_neighbours(cloud):
     """
     computes the number of neighbours of each point in the cloud
@@ -9,13 +10,26 @@ def count_neighbours(cloud):
     cloud = cloud.astype(np.int8)
     N = cloud.shape[0]
     neighbours = np.zeros_like(cloud, dtype=np.int8)
-    neighbours += np.concatenate([np.zeros((1, N, N), dtype=np.int8), cloud[:-1,:,:]], axis=0)
-    neighbours += np.concatenate([cloud[1:,:,:], np.zeros((1, N, N), dtype=np.int8)], axis=0)
-    neighbours += np.concatenate([np.zeros((N, 1, N), dtype=np.int8), cloud[:,:-1,:]], axis=1)
-    neighbours += np.concatenate([cloud[:,1:,:], np.zeros((N, 1, N), dtype=np.int8)], axis=1)
-    neighbours += np.concatenate([np.zeros((N, N, 1), dtype=np.int8), cloud[:,:,:-1]], axis=2)
-    neighbours += np.concatenate([cloud[:,:,1:], np.zeros((N, N, 1), dtype=np.int8)], axis=2)
+    neighbours += np.concatenate(
+        [np.zeros((1, N, N), dtype=np.int8), cloud[:-1, :, :]], axis=0
+    )
+    neighbours += np.concatenate(
+        [cloud[1:, :, :], np.zeros((1, N, N), dtype=np.int8)], axis=0
+    )
+    neighbours += np.concatenate(
+        [np.zeros((N, 1, N), dtype=np.int8), cloud[:, :-1, :]], axis=1
+    )
+    neighbours += np.concatenate(
+        [cloud[:, 1:, :], np.zeros((N, 1, N), dtype=np.int8)], axis=1
+    )
+    neighbours += np.concatenate(
+        [np.zeros((N, N, 1), dtype=np.int8), cloud[:, :, :-1]], axis=2
+    )
+    neighbours += np.concatenate(
+        [cloud[:, :, 1:], np.zeros((N, N, 1), dtype=np.int8)], axis=2
+    )
     return neighbours
+
 
 def get_surface_points(cloud):
     """
@@ -23,8 +37,9 @@ def get_surface_points(cloud):
     """
     surface = cloud.copy()
     neighbours = count_neighbours(cloud)
-    surface[neighbours==6] = False
+    surface[neighbours == 6] = False
     return surface
+
 
 def get_mesh(cloud, space):
     """
@@ -34,14 +49,15 @@ def get_mesh(cloud, space):
     x = space[points_inside][:, 0]
     y = space[points_inside][:, 1]
     z = space[points_inside][:, 2]
-    points = np.array([x,y,z]).T
+    points = np.array([x, y, z]).T
     point_cloud = pv.PolyData(points)
     mesh = point_cloud.reconstruct_surface(progress_bar=True)
 
     vertices = mesh.points
     faces = mesh.faces.reshape(-1, 4)[:, 1:]
-    
+
     return vertices, faces
+
 
 def point_cloud_to_mesh(cloud, space):
     """
