@@ -1,5 +1,4 @@
 import numpy as np
-from tqdm import tqdm
 from .utils import gaussian_blur_kernel
 
 
@@ -37,7 +36,7 @@ def convolutional_barycenter_3d(
     barycenter = np.ones(shapes_shape, dtype=np.float64)
     log_barycenter = np.log(barycenter)
 
-    for _ in tqdm(range(n_iter)):
+    for _ in range(n_iter):
 
         # save the current barycenter to measure the change
         previous_barycenter = barycenter
