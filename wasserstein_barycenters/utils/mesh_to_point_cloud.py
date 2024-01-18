@@ -1,5 +1,5 @@
 import numpy as np
-
+from tqdm import tqdm
 
 def ray_intersects_triangle(
     ray_origin: np.ndarray,
@@ -58,11 +58,11 @@ def mesh_to_point_cloud(
 
     # Check if the points are inside the mesh volume
     ray_origin = points
-    ray_direction = np.ones((3,))  # Choose a ray direction
+    ray_direction = np.array([1, 0, 0])  # Choose a ray direction
 
     inside_count = 0
 
-    for triangle_indices in triangles:
+    for triangle_indices in tqdm(triangles):
         triangle_vertices = vertices[triangle_indices]
         intersections = ray_intersects_triangle(
             ray_origin, ray_direction, triangle_vertices

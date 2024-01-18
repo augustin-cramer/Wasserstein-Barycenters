@@ -7,7 +7,7 @@ def convolutional_barycenter_3d(
     alpha: np.ndarray,
     n_iter: int = 100,
     tol: float = 1e-5,
-    sigma=1,
+    sigma: float = 4.,
 ) -> np.ndarray:
     """Compute the convolutional barycenter of a set of shapes with given weights.
 
@@ -16,6 +16,7 @@ def convolutional_barycenter_3d(
         alpha (np.ndarray): weight of each shape in the result
         n_iter (int, optional): maximum number of iterations. Defaults to 100.
         tol (float, optional): minimum change required for the iterations to keep on. Defaults to 1e-5.
+        sigma (float, optional): standard deviation of the gaussian kernel. Defaults to 4.
 
     Returns:
         np.ndarray: the convolutional barycenter of the shapes with the given weights
@@ -27,7 +28,7 @@ def convolutional_barycenter_3d(
     alpha = alpha / sum(alpha)
 
     area_weights = np.ones(shapes_shape, dtype=np.float64)
-    kernel = lambda x: gaussian_blur_kernel(x, sigma=sigma, size=50 * sigma)
+    kernel = lambda x: gaussian_blur_kernel(x, sigma=sigma, size= 50 * int(sigma))
 
     v = np.ones(initial_shapes.shape, dtype=np.float64)
     w = np.ones(initial_shapes.shape, dtype=np.float64)
@@ -47,7 +48,9 @@ def convolutional_barycenter_3d(
         for i in range(n_shapes):
             w[i] = initial_shapes[i] / kernel(area_weights * v[i])
             d[i] = v[i] * kernel(area_weights * w[i])
+            # for computaitonal stability, we make sure that d is not too small
             d[d < 1e-100] = 1e-100
+            # we use log_barycenter to avoid underflow
             log_barycenter += alpha[i] * np.log(d[i])
         barycenter = np.exp(log_barycenter)
 
