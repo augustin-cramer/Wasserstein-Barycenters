@@ -51,7 +51,7 @@ def get_mesh(cloud, space):
     z = space[points_inside][:, 2]
     points = np.array([x, y, z]).T
     point_cloud = pv.PolyData(points)
-    mesh = point_cloud.reconstruct_surface(progress_bar=True)
+    mesh = point_cloud.reconstruct_surface(progress_bar=True, nbr_sz=10)
 
     vertices = mesh.points
     faces = mesh.faces.reshape(-1, 4)[:, 1:]

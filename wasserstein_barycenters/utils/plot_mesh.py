@@ -1,7 +1,7 @@
 import plotly.graph_objects as go
 
 
-def plot_mesh(vertices, faces, show_axis=True, **kwargs):
+def plot_mesh(vertices, faces, show_axis=True, return_fig=False, **kwargs):
     fig = go.Figure(
         data=[
             go.Mesh3d(
@@ -20,5 +20,7 @@ def plot_mesh(vertices, faces, show_axis=True, **kwargs):
         fig.update_scenes(
             xaxis_visible=False, yaxis_visible=False, zaxis_visible=False
         )
-
+    if return_fig:
+        return fig
+    
     fig.show()

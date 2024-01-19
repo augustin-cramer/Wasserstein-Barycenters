@@ -22,7 +22,7 @@ def ray_intersects_triangle(
     h = np.cross(ray_direction, e2)
     a = np.dot(e1, h)
 
-    mask_a = (a > -1e-6) & (a < 1e-6)
+    mask_a = (a > -1e-20) & (a < 1e-20)
     f = np.where(mask_a, np.inf, 1.0 / a)
 
     s = ray_origin - v0
@@ -39,7 +39,7 @@ def ray_intersects_triangle(
 
     t = f * np.dot(q, e2)
 
-    return (t > 1e-6) & (t != np.inf)
+    return (t > 1e-20) & (np.abs(t) != np.inf)
 
 
 def mesh_to_point_cloud(

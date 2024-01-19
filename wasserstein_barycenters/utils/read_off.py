@@ -14,16 +14,16 @@ def read_off(filename: str) -> (np.ndarray, np.ndarray):
         if "OFF" != f.readline().strip():
             raise ("Not a valid OFF header")
         n_verts, n_faces, _ = tuple(
-            [int(s) for s in f.readline().strip().split(" ")]
+            [int(s) for s in " ".join(f.readline().split()).strip().split(" ")]
         )
         vertices = [
-            [float(s) for s in f.readline().strip().split(" ")]
+            [float(s) for s in " ".join(f.readline().split()).strip().split(" ")]
             for _ in range(n_verts)
         ]
         faces = [
             [
                 int(s)
-                for s in f.readline().replace("   ", " ").strip().split(" ")
+                for s in " ".join(f.readline().split()).strip().split(" ")
             ][1:]
             for _ in range(n_faces)
         ]

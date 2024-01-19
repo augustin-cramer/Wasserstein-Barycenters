@@ -6,8 +6,8 @@ def convolutional_barycenter_3d(
     initial_shapes: np.ndarray,
     alpha: np.ndarray,
     n_iter: int = 100,
-    tol: float = 1e-5,
-    sigma: float = 4.,
+    tol: float = 1e-4,
+    sigma: float = 4,
 ) -> np.ndarray:
     """Compute the convolutional barycenter of a set of shapes with given weights.
 
@@ -59,7 +59,6 @@ def convolutional_barycenter_3d(
 
         # measure the change
         change = np.sum(np.abs(previous_barycenter - barycenter))
-
         if change < tol or np.isnan(change):
             return barycenter
 
