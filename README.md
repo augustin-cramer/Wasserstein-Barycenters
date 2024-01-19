@@ -18,11 +18,11 @@ A demonstration of how we proceed to do the shape interpolation is exposed in th
 
 The source code of all the tools that used during our project can be found in the directory `wasserstein_barycenters/`.
 
-#### Main script
+#### 1 - Main script
 
 Inside this directory, the main script `wasserstein_barycenters_3d.py`contains the implementation of the algorithm described in our studied paper.
 
-#### Utils
+#### 2 - Utils
 
 Then the directory `utils/` contains several tools that we developped for our work, let's go through some of them.
 
