@@ -40,7 +40,7 @@ After having computed the Wasserstein barycenters, we end up with a new point cl
 
 ### Data
 
-The `data\` directory is divided in two sub-directories containing meshes and numpy data. Our raw data was only the meshes but we provide numpy files for a faster execution of the demo notebooks.
+The `data/` directory is divided in two sub-directories containing meshes and numpy data. Our raw data was only the meshes but we provide numpy files for a faster execution of the demo notebooks.
 
 ## Originality of the code
 
