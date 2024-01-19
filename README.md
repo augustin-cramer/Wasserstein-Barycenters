@@ -1,4 +1,4 @@
-# Convolutionnal-Wasserstein-Distances
+# Wasserstein Barycenters
 
 This repository main objective is to implement the Wasserstein barycenters algorithm as it is described in [Solomon et al. (2015)_Convolutionnal Wasserstein Distances: Efficient Optimal Transportation on Geometric Domains_](https://hal.science/hal-01188953) by A. Conrad, A. Cramer and N. Farhan.
 
