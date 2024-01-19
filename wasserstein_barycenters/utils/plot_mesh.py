@@ -22,5 +22,5 @@ def plot_mesh(vertices, faces, show_axis=True, return_fig=False, **kwargs):
         )
     if return_fig:
         return fig
-    
+
     fig.show()

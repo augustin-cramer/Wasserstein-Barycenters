@@ -1,6 +1,7 @@
 import numpy as np
 from tqdm import tqdm
 
+
 def ray_intersects_triangle(
     ray_origin: np.ndarray,
     ray_direction: np.ndarray,

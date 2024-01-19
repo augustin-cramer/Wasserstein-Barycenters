@@ -28,7 +28,9 @@ def convolutional_barycenter_3d(
     alpha = alpha / sum(alpha)
 
     area_weights = np.ones(shapes_shape, dtype=np.float64)
-    kernel = lambda x: gaussian_blur_kernel(x, sigma=sigma, size= 50 * int(sigma))
+    kernel = lambda x: gaussian_blur_kernel(
+        x, sigma=sigma, size=50 * int(sigma)
+    )
 
     v = np.ones(initial_shapes.shape, dtype=np.float64)
     w = np.ones(initial_shapes.shape, dtype=np.float64)

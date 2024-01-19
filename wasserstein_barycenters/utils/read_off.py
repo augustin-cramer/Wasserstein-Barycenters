@@ -17,7 +17,10 @@ def read_off(filename: str) -> (np.ndarray, np.ndarray):
             [int(s) for s in " ".join(f.readline().split()).strip().split(" ")]
         )
         vertices = [
-            [float(s) for s in " ".join(f.readline().split()).strip().split(" ")]
+            [
+                float(s)
+                for s in " ".join(f.readline().split()).strip().split(" ")
+            ]
             for _ in range(n_verts)
         ]
         faces = [
